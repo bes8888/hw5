@@ -68,126 +68,174 @@ function renderRides(ridesArray) {
 }
 
 
+
+
+
 function buttonhightlight(selection) {
-  
   // clear all backgrounds
     buttons = document.querySelectorAll('a')
     for (i=0; i<buttons.length; i++) {
       buttons[i].classList.remove('bg-gray-400')
     }
   
-    console.log(buttons)
+   
   // highlight selected button
-    buttons[selection].classList.add('bg-gray-400')
+   
+  document.querySelector(`#${selection}`).classList.add('bg-gray-400')
 
  }
 
-window.addEventListener('DOMContentLoaded', async function() {
+window.addEventListener('DOMContentLoaded', function() {
   // YOUR CODE
+// optional assignment:  this section loops thru buttons to reduce amount of code
 
+
+let buttons = document.querySelectorAll('a')
+
+let servicelevel
+let servicetag
+
+s
+
+for (i=0; i<buttons.length; i++) {
+
+  buttons[i].addEventListener('click', async function () {
+
+    servicelevel = event.target.innerHTML
+    servicetag = event.target.getAttribute('id')
+  
     
+    let response = await fetch('https://kiei451.com/api/rides.json')
+    let allrides = await response.json()
 
-    // All-button:  display all rides when clicked
-      let allbutton = document.querySelector('#all-filter')
-      allbutton.addEventListener('click', async function() {
-        
-       
-          // go get the rides data
-            let response = await fetch('https://kiei451.com/api/rides.json')
-            let allrides = await response.json()
-          
-        console.log('All-Rides Selected')
-        // clear out HTML from any previous selections
+    // clear out HTML from any previous selections
         document.querySelector('.rides').innerHTML = null
+
+    // Figure out which rides to display, pass to render function
+      
+      if (servicelevel == 'All Rides') {
         renderRides(allrides)
-        buttonhightlight(0)
-         }
-      )
-    //  Noober Purple Button:  Display only Noober-Purple Rides
-      let purplebutton = document.querySelector('#noober-purple-filter')
-      purplebutton.addEventListener('click', async function() {
-        
-          // go get the rides data
-          let response = await fetch('https://kiei451.com/api/rides.json')
-          let allrides = await response.json()
+      }
+      else {
+        let selectedrides = []
+        for (i=0; i<allrides.length; i++) {
+              if (levelOfService(allrides[i]) ==`${servicelevel}`) {
+                    selectedrides.push(allrides[i])
+                  }
+              }
+        renderRides(selectedrides)
+      }
+
+        buttonhightlight(servicetag)
+  })
+  }
+
+
+
+
+  // ----- this section codes each button seaparetly --- 
+
+    // // All-button:  display all rides when clicked
+    //   let allbutton = document.querySelector('#all-filter')
+    //   allbutton.addEventListener('click', async function() {
         
        
-        console.log('Noober Purple Selected')
-        // clear out HTML from any previous selections
-        document.querySelector('.rides').innerHTML = null
-        let selectedrides = []
-        for (i=0; i<allrides.length; i++) {
-            if (levelOfService(allrides[i]) =='Noober Purple') {
-              selectedrides.push(allrides[i])
-            }
-        }
-        renderRides(selectedrides)
-        buttonhightlight(2)
-      })
+    //       // go get the rides data
+    //         let response = await fetch('https://kiei451.com/api/rides.json')
+    //         let allrides = await response.json()
+          
+    //     console.log('All-Rides Selected')
+    //     // clear out HTML from any previous selections
+    //     document.querySelector('.rides').innerHTML = null
+    //     renderRides(allrides)
+    //     buttonhightlight(0)
+    //      }
+    //   )
+    // //  Noober Purple Button:  Display only Noober-Purple Rides
+    //   let purplebutton = document.querySelector('#noober-purple-filter')
+    //   purplebutton.addEventListener('click', async function() {
+        
+    //       // go get the rides data
+    //       let response = await fetch('https://kiei451.com/api/rides.json')
+    //       let allrides = await response.json()
+        
+       
+    //     console.log('Noober Purple Selected')
+    //     // clear out HTML from any previous selections
+    //     document.querySelector('.rides').innerHTML = null
+    //     let selectedrides = []
+    //     for (i=0; i<allrides.length; i++) {
+    //         if (levelOfService(allrides[i]) =='Noober Purple') {
+    //           selectedrides.push(allrides[i])
+    //         }
+    //     }
+    //     renderRides(selectedrides)
+    //     buttonhightlight(2)
+    //   })
 
-      //  Noober Pool Button:  Display only Noober-Pool Rides
-      let poolbutton = document.querySelector('#noober-pool-filter')
-      poolbutton.addEventListener('click', async function() {
+    //   //  Noober Pool Button:  Display only Noober-Pool Rides
+    //   let poolbutton = document.querySelector('#noober-pool-filter')
+    //   poolbutton.addEventListener('click', async function() {
         
-          // go get the rides data
-          let response = await fetch('https://kiei451.com/api/rides.json')
-          let allrides = await response.json()
+    //       // go get the rides data
+    //       let response = await fetch('https://kiei451.com/api/rides.json')
+    //       let allrides = await response.json()
         
-        console.log('Noober Pool Selected')
-        // clear out HTML from any previous selections
-        document.querySelector('.rides').innerHTML = null
-        let selectedrides = []
-        for (i=0; i<allrides.length; i++) {
-            if (levelOfService(allrides[i]) =='Noober Pool') {
-              selectedrides.push(allrides[i])
-            }
-        }
-        renderRides(selectedrides)
-        buttonhightlight(1)
-      })
+    //     console.log('Noober Pool Selected')
+    //     // clear out HTML from any previous selections
+    //     document.querySelector('.rides').innerHTML = null
+    //     let selectedrides = []
+    //     for (i=0; i<allrides.length; i++) {
+    //         if (levelOfService(allrides[i]) =='Noober Pool') {
+    //           selectedrides.push(allrides[i])
+    //         }
+    //     }
+    //     renderRides(selectedrides)
+    //     buttonhightlight(1)
+    //   })
 
       
-      //  Noober XL Button:  Display only Noober-XL Rides
-      let xlbutton = document.querySelector('#noober-xl-filter')
-      xlbutton.addEventListener('click', async function() {
+    //   //  Noober XL Button:  Display only Noober-XL Rides
+    //   let xlbutton = document.querySelector('#noober-xl-filter')
+    //   xlbutton.addEventListener('click', async function() {
         
-          // go get the rides data
-          let response = await fetch('https://kiei451.com/api/rides.json')
-          let allrides = await response.json()
+    //       // go get the rides data
+    //       let response = await fetch('https://kiei451.com/api/rides.json')
+    //       let allrides = await response.json()
         
-        console.log('Noober XL Selected')
-        // clear out HTML from any previous selections
-        document.querySelector('.rides').innerHTML = null
-        let selectedrides = []
-        for (i=0; i<allrides.length; i++) {
-            if (levelOfService(allrides[i]) =='Noober XL') {
-              selectedrides.push(allrides[i])
-            }
-        }
-        renderRides(selectedrides)
-        buttonhightlight(3)
-      })
+    //     console.log('Noober XL Selected')
+    //     // clear out HTML from any previous selections
+    //     document.querySelector('.rides').innerHTML = null
+    //     let selectedrides = []
+    //     for (i=0; i<allrides.length; i++) {
+    //         if (levelOfService(allrides[i]) =='Noober XL') {
+    //           selectedrides.push(allrides[i])
+    //         }
+    //     }
+    //     renderRides(selectedrides)
+    //     buttonhightlight(3)
+    //   })
 
-      //  Noober X Button:  Display only Noober-X Rides
-      let xbutton = document.querySelector('#noober-x-filter')
-      xbutton.addEventListener('click', async function() {
+    //   //  Noober X Button:  Display only Noober-X Rides
+    //   let xbutton = document.querySelector('#noober-x-filter')
+    //   xbutton.addEventListener('click', async function() {
         
-          // go get the rides data
-          let response = await fetch('https://kiei451.com/api/rides.json')
-          let allrides = await response.json()
+    //       // go get the rides data
+    //       let response = await fetch('https://kiei451.com/api/rides.json')
+    //       let allrides = await response.json()
         
-        console.log('Noober X Selected')
-          // clear out HTML from any previous selections
-            document.querySelector('.rides').innerHTML = null
-        let selectedrides = []
-        for (i=0; i<allrides.length; i++) {
-            if (levelOfService(allrides[i]) =='Noober X') {
-              selectedrides.push(allrides[i])
-            }
-        }
-        renderRides(selectedrides)
-        buttonhightlight(4)
-      })
+    //     console.log('Noober X Selected')
+    //       // clear out HTML from any previous selections
+    //         document.querySelector('.rides').innerHTML = null
+    //     let selectedrides = []
+    //     for (i=0; i<allrides.length; i++) {
+    //         if (levelOfService(allrides[i]) =='Noober X') {
+    //           selectedrides.push(allrides[i])
+    //         }
+    //     }
+    //     renderRides(selectedrides)
+    //     buttonhightlight(4)
+    //   })
 
 
 
