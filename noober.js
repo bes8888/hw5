@@ -95,7 +95,7 @@ let buttons = document.querySelectorAll('a')
 let servicelevel
 let servicetag
 
-s
+
 
 for (i=0; i<buttons.length; i++) {
 
